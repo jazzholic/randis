@@ -78,6 +78,30 @@ class SiteController extends Controller
             $name = $exception->getName();
             $message = $exception->getMessage();
             
+            // Handle Error 403 - Forbidden
+            if ($statusCode == 403) {
+                // Truncate session table untuk reset session
+                try {
+                    Yii::$app->db->createCommand('TRUNCATE TABLE session')->execute();
+                    // Logout user jika ada
+                    if (!Yii::$app->user->isGuest) {
+                        Yii::$app->user->logout();
+                    }
+                    // Flash message
+                    Yii::$app->session->setFlash('info', 'Session Anda telah direset. Silahkan login kembali.');
+                    // Redirect ke login
+                    return $this->redirect(['login']);
+                } catch (\Exception $e) {
+                    Yii::$app->session->setFlash('error', 'Terjadi kesalahan: ' . $e->getMessage());
+                    return $this->redirect(['login']);
+                }
+            }
+            
+            // Jika user sudah login untuk error lain, redirect ke halaman admin/home
+            if (!Yii::$app->user->isGuest && $statusCode != 403) {
+                return $this->redirect(['index']);
+            }
+            
             $this->layout = 'error';
             
             return $this->render('error', [

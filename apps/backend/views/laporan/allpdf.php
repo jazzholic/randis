@@ -65,14 +65,26 @@ $bln_array = array (
 <table border="0" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td align="center" style="vertical-align:top;padding-bottom:15px">
-            <div style="position: absolute; left:60px; right: 0; top: 60px; bottom: 0;">
-                <img src="<?= Yii::$app->request->baseUrl ?>/img/pasaman.png" 
-                     style="margin: 0;" width="70" />
-            </div><h2 style="font-weight: bold">PEMERINTAH KOTA MATARAM</h2><h2 style="font-weight: bold"><?=$instansi['nama_instansi']?><br /></h2><span style="font-size: 11px">
-        <?=$instansi['alamat']?><br />  Telp. : <?=$instansi['telp']?> Fax. : <?=$instansi['fax']?> Email : <?=$instansi['email']?></span><br /></td>
+            <table border="0" width="100%">
+                <tr>
+                    <td width="70" style="vertical-align:top;">
+                        <img src="<?= Yii::getAlias('@webroot') . '/img/pasaman.png' ?>" width="70" style="margin:0;" />
+                    </td>
+                    <td style="text-align:center;">
+                        <h2 style="font-weight: bold;margin:5px 0;">PEMERINTAH KOTA MATARAM</h2>
+                        <h2 style="font-weight: bold;margin:5px 0;"><?= $instansi['nama_instansi'] ?? 'SEMUA INSTANSI' ?></h2>
+                        <span style="font-size: 11px">
+                            <?= $instansi['alamat'] ?? '' ?><br />Telp. : <?= $instansi['telp'] ?? '' ?> Fax. : <?= $instansi['fax'] ?? '' ?> Email : <?= $instansi['email'] ?? '' ?>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </td>
     </tr>
     <tr>
-        <td style="border-top:2px solid #000;border-bottom: 1px solid #000;padding-top:2px"><div></div></td>
+        <td style="border-top:2px solid #000;border-bottom: 1px solid #000;padding-top:2px">
+            &nbsp;
+        </td>
     </tr>
 </table>
 <h3 style="text-align: center;padding-bottom: 5px;">DATA KENDARAAN DINAS PEMERINTAH KOTA MATARAM<br><?=$instansi['nama_instansi']?><br>TAHUN <?=date('Y')?></h3>
@@ -80,20 +92,19 @@ $bln_array = array (
 <table style="border-spacing: 0;border-collapse: collapse; width: 100%;">
             <thead>
                 <tr>
-                    <th style="vertical-align:middle;text-align:center" rowspan="2">#</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">JENIS BARANG</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">MERK/TYPE</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">UKURAN/CC</th>
-                    <th style="vertical-align:middle;text-align:center" rowspan="2">TAHUN PEMBELIAN</th>
-                    <th style="vertical-align:middle;text-align:center" colspan="4">NOMOR</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">NAMA PEMEGANG</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">KETERANGAN</th>
-                </tr>
-                <tr>
+                    <th style="vertical-align:middle;text-align:center">#</th>
+                    <th style="vertical-align:middle;text-align:left">JENIS BARANG</th>
+                    <th style="vertical-align:middle;text-align:left">MERK/TYPE</th>
+                    <th style="vertical-align:middle;text-align:left">UKURAN/CC</th>
+                    <th style="vertical-align:middle;text-align:center">TAHUN PEMBELIAN</th>
+                    <th style="vertical-align:middle;text-align:left">KONDISI</th>
+                    <th style="vertical-align:middle;text-align:right">HARGA PEMBELIAN</th>
                     <th style="vertical-align:middle;text-align:center">RANGKA</th>
                     <th style="vertical-align:middle;text-align:center">MESIN</th>
                     <th style="vertical-align:middle;text-align:center">POLISI</th>
                     <th style="vertical-align:middle;text-align:center">BPKB</th>
+                    <th style="vertical-align:middle;text-align:left">NAMA PEMEGANG</th>
+                    <th style="vertical-align:middle;text-align:left">KETERANGAN</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,28 +115,27 @@ $bln_array = array (
                     <td><?=$key['nama_merk']?>/<?=$key['nama_type']?></td>
                     <td style="text-align:center"><?=$key['isi_silinder']?></td>
                     <td style="text-align:center"><?=$key['tahun_pembelian']?></td>
+                    <td><?=$key['kondisi'] ?? '-'?></td>
+                    <td style="text-align:right"><?= number_format($key['harga_pembelian'] ?? 0, 0, ',', '.') ?></td>
                     <td><?=$key['nomor_rangka']?></td>
                     <td><?=$key['nomor_mesin']?></td>
                     <td><?=$key['nomor_polisi']?></td>
                     <td><?=$key['nomor_bpkb']?></td>
                     <td><?=$key['nama_pemegang']?></td>
-                    <td></td>
+                    <td><?=$key['keterangan'] ?? ''?></td>
                 </tr>
                 <?php $i++;}?>
             </tbody>
 </table>
-<?php
-$pejabat = \common\models\Pejabat::find()->where(['instansi_id'=>$instansi['id_instansi']])->andWhere(['jenis_jabatan'=>6])->one();
-?>
-
 
 </div>
+<?php if ((int) $model->instansi !== 0): ?>
 <table style="width: 100%;margin-top:75px">
     <tr>
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
-        <td style="width: 25%">Makasar, <?=datetimes(date('Y-m-d'))?></td>
+        <td style="width: 25%">Mataram, <?=datetimes(date('Y-m-d'))?></td>
     </tr>
     <tr>
         <td style="width: 25%">&nbsp;</td>
@@ -143,14 +153,15 @@ $pejabat = \common\models\Pejabat::find()->where(['instansi_id'=>$instansi['id_i
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%"></td>
-        <td style="width: 25%"><u>&nbsp;&nbsp;<?=$pejabat['nama_pejabat']?>&nbsp;&nbsp;</u></td>
+        <td style="width: 25%"><u>&nbsp;&nbsp;<?= $pejabat['nama_pejabat'] ?? '' ?>&nbsp;&nbsp;</u></td>
     </tr>
     <tr>
         <td style="width: 25%"></td>
         <td style="width: 25%"></td>
         <td style="width: 25%">&nbsp;</td>
-        <td style="width: 25%">NIP. <?=$pejabat['nip_pejabat']?></td>
+        <td style="width: 25%">NIP. <?= $pejabat['nip_pejabat'] ?? '' ?></td>
     </tr>
 </table>
+<?php endif; ?>
 </body>
 </html>

@@ -24,7 +24,7 @@ function kemarin($tanggal,$komoditi){
 }
 
 
-?>
+?> 
 <div class="box box-info setting-update">
     <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-check-square-o" aria-hidden="true"></i> <?= Html::encode($this->title) ?></h3>
@@ -58,12 +58,18 @@ function kemarin($tanggal,$komoditi){
                 ]);
                 ?>
 
+                <?php
+                $instansiList = ArrayHelper::map(\common\models\Instansi::find()->all(), 'id_instansi', 'nama_instansi');
+                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->level === 'administrator') {
+                    $instansiList = ['0' => 'SEMUA'] + $instansiList;
+                }
+                ?>
                 <?= $form->field($model, 'instansi')->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map(\common\models\Instansi::find()->all(), 'id_instansi', 'nama_instansi'),
+                    'data' => $instansiList,
                     'options' => ['placeholder' => 'Instansi ...'],
                     'pluginOptions' => [
                         'allowClear' => true,
-                        'disabled'=>(Yii::$app->user->identity->level != 'administrator' ? true:false)
+                        'disabled' => Yii::$app->user->isGuest || (Yii::$app->user->identity->level ?? null) !== 'administrator'
                     ],
                 ]);
                 ?>
@@ -87,19 +93,19 @@ function kemarin($tanggal,$komoditi){
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th style="vertical-align:middle;text-align:center" rowspan="2">#</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">JENIS BARANG</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">MERK/TYPE</th>
-                    <th style="vertical-align:middle;text-align:left" rowspan="2">UKURAN/CC</th>
-                    <th style="vertical-align:middle;text-align:center" rowspan="2">TAHUN PEMBELIAN</th>
-                    <th style="vertical-align:middle;text-align:center" colspan="4">NOMOR</th>
-                    <th style="vertical-align:middle;text-align:center" rowspan="2">NAMA PEMEGANG</th>
-                </tr>
-                <tr>
+                    <th style="vertical-align:middle;text-align:center">#</th>
+                    <th style="vertical-align:middle;text-align:left">JENIS BARANG</th>
+                    <th style="vertical-align:middle;text-align:left">MERK/TYPE</th>
+                    <th style="vertical-align:middle;text-align:left">UKURAN/CC</th>
+                    <th style="vertical-align:middle;text-align:center">TAHUN PEMBELIAN</th>
+                    <th style="vertical-align:middle;text-align:left">KONDISI</th>
+                    <th style="vertical-align:middle;text-align:right">HARGA PEMBELIAN</th>
                     <th style="vertical-align:middle;text-align:center">RANGKA</th>
                     <th style="vertical-align:middle;text-align:center">MESIN</th>
                     <th style="vertical-align:middle;text-align:center">POLISI</th>
                     <th style="vertical-align:middle;text-align:center">BPKB</th>
+                    <th style="vertical-align:middle;text-align:left">NAMA PEMEGANG</th>
+                    <th style="vertical-align:middle;text-align:left">KETERANGAN</th>
                 </tr>
             </thead>
             <tbody>
@@ -118,11 +124,16 @@ function kemarin($tanggal,$komoditi){
                     <td><?=$key['nama_merk']?>/<?=$key['nama_type']?></td>
                     <td style="text-align:center"><?=$key['isi_silinder']?></td>
                     <td style="text-align:center"><?=$key['tahun_pembelian']?></td>
+                    <td><?= $key['kondisi'] ?? '-' ?></td>
+                    <td style="text-align:right">
+                        <?= number_format($key['harga_pembelian'], 0, ',', '.') ?>
+                    </td>
                     <td><?=$key['nomor_rangka']?></td>
                     <td><?=$key['nomor_mesin']?></td>
                     <td><?=$key['nomor_polisi']?></td>
                     <td><?=$key['nomor_bpkb']?></td>
                     <td><?=$key['nama_pemegang']?></td>
+                    <td><?=$key['keterangan'] ?? ''?></td>
                 </tr>
                 <?php $i++;}?>
             </tbody>

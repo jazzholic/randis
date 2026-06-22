@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use Mpdf;
+use Mpdf; 
 use common\models\ReportForm;
 use common\models\Report;
 use yii\web\Controller;
@@ -49,7 +49,7 @@ class LaporanController extends \yii\web\Controller
     public function actionAll()
     {
         $model  = new ReportForm();
-        if(Yii::$app->user->identity->level != 'administrator'){
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 'administrator'){
             $model->instansi = Yii::$app->user->identity->instansi;
         }
         
@@ -70,38 +70,94 @@ class LaporanController extends \yii\web\Controller
         ]);
     }
 
-    public function actionAllpdf(array $params) {
-        $model  = new ReportForm;
-        $report = new Report();
+    // public function actionAllpdf(array $params) {
+    //     $model  = new ReportForm;
+    //     $report = new Report();
         
-        $model->instansi = $params['instansi'];
+    //     $model->instansi = $params['instansi'];
 
-        $instansi = \common\models\Instansi::find()->where(['id_instansi'=>$model->instansi])->one();
+    //     $instansi = \common\models\Instansi::find()->where(['id_instansi'=>$model->instansi])
+    //     ->one();
         
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $report->arrayAll($model),
-            'pagination'=> [
-                'pageSize'=>FALSE,
-            ]
-        ]);
+    //     $dataProvider = new ArrayDataProvider([
+    //         'allModels' => $report->arrayAll($model),
+    //         'pagination'=> [
+    //             'pageSize'=>FALSE,
+    //         ]
+    //     ]);
         
-        $html = $this->renderPartial('allpdf', ['dataProvider'=>$dataProvider,'model'=>$model,'instansi'=>$instansi]);
+    //     $html = $this->renderPartial('allpdf', ['dataProvider'=>$dataProvider,'model'=>$model,'instansi'=>$instansi]);
         
-        //$mpdf = new mPDF('c', 'A4','','',0,0,0,0,0,0);
-        //$mpdf = new \Mpdf\Mpdf('','Legal',0,'',10,10);
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'Legal-L']);
-        $mpdf->AddPage('L');
-        $mpdf->SetDisplayMode('fullpage');
-        $mpdf->list_indent_first_level = 0;
-        $mpdf->WriteHTML($html);
-        $mpdf->Output();        
-        exit;
+    //     //$mpdf = new mPDF('c', 'A4','','',0,0,0,0,0,0);
+    //     //$mpdf = new \Mpdf\Mpdf('','Legal',0,'',10,10);
+    //     $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'Legal-L']);
+    //     $mpdf->AddPage('L');
+    //     $mpdf->SetDisplayMode('fullpage');
+    //     $mpdf->list_indent_first_level = 0;
+    //     $mpdf->WriteHTML($html);
+    //     $mpdf->Output();        
+    //     exit;
+    // }
+    public function actionAllpdf(array $params)
+{
+    $model  = new ReportForm;
+    $report = new Report();
+
+    $model->instansi = $params['instansi'];
+
+    if ((int) $model->instansi === 0) {
+        $instansi = [
+            'nama_instansi' => 'SEMUA INSTANSI',
+            'alamat'        => '',
+            'telp'          => '',
+            'fax'           => '',
+            'email'         => ''
+        ];
+    } else {
+        $instansi = \common\models\Instansi::find()
+            ->where(['id_instansi' => $model->instansi])
+            ->one();
     }
+
+    $pejabat = \common\models\Pejabat::find()
+        ->where([
+            'instansi_id'   => $model->instansi,
+            'jenis_jabatan' => 6
+        ])
+        ->one();
+
+    $dataProvider = new ArrayDataProvider([
+        'allModels' => $report->arrayAll($model),
+        'pagination' => [
+            'pageSize' => false,
+        ]
+    ]);
+
+    $html = $this->renderPartial('allpdf', [
+        'dataProvider' => $dataProvider,
+        'model'        => $model,
+        'instansi'     => $instansi,
+        'pejabat'      => $pejabat,
+    ]);
+
+    $mpdf = new \Mpdf\Mpdf([
+        'mode'   => 'utf-8',
+        'format' => 'Legal-L'
+    ]);
+
+    $mpdf->AddPage('L');
+    $mpdf->SetDisplayMode('fullpage');
+    $mpdf->list_indent_first_level = 0;
+    $mpdf->WriteHTML($html);
+    $mpdf->Output();
+
+    exit;
+}
 
     public function actionKondisi()
     {
         $model  = new ReportForm();
-        if(Yii::$app->user->identity->level != 'administrator'){
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 'administrator'){
             $model->instansi = Yii::$app->user->identity->instansi;
         }
         
@@ -167,7 +223,7 @@ class LaporanController extends \yii\web\Controller
     public function actionPajak()
     {
         $model  = new ReportForm();
-        if(Yii::$app->user->identity->level != 'administrator'){
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 'administrator'){
             $model->instansi = Yii::$app->user->identity->instansi;
         }
         
@@ -218,7 +274,7 @@ class LaporanController extends \yii\web\Controller
     public function actionPerawatan()
     {
         $model  = new ReportForm();
-        if(Yii::$app->user->identity->level != 'administrator'){
+        if(!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 'administrator'){
             $model->instansi = Yii::$app->user->identity->instansi;
         }
         

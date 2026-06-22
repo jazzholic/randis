@@ -141,7 +141,7 @@ $pejabat = \common\models\Pejabat::find()->where(['instansi_id'=>$instansi['id_i
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
-        <td style="width: 25%">Makasar, <?=datetimes(date('Y-m-d'))?></td>
+        <td style="width: 25%">Mataram, <?=datetimes(date('Y-m-d'))?></td>
     </tr>
     <tr>
         <td style="width: 25%">&nbsp;</td>
