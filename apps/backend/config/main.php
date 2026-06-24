@@ -54,7 +54,9 @@ return [
             'enableAutoLogin' => true,
             //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'as loginOnce' => [  // <- bagian ini yg penting
-                'class' => 'common\classes\LoginOnce', 
+                'class' => 'common\classes\LoginOnce',
+                'kickLogedUser' => true,
+                'throwExeption' => false,
             ]
         ],
         'session' => [

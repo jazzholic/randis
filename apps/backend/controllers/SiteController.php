@@ -80,21 +80,11 @@ class SiteController extends Controller
             
             // Handle Error 403 - Forbidden
             if ($statusCode == 403) {
-                // Truncate session table untuk reset session
-                try {
-                    Yii::$app->db->createCommand('TRUNCATE TABLE session')->execute();
-                    // Logout user jika ada
-                    if (!Yii::$app->user->isGuest) {
-                        Yii::$app->user->logout();
-                    }
-                    // Flash message
-                    Yii::$app->session->setFlash('info', 'Session Anda telah direset. Silahkan login kembali.');
-                    // Redirect ke login
-                    return $this->redirect(['login']);
-                } catch (\Exception $e) {
-                    Yii::$app->session->setFlash('error', 'Terjadi kesalahan: ' . $e->getMessage());
-                    return $this->redirect(['login']);
+                if (!Yii::$app->user->isGuest) {
+                    Yii::$app->user->logout();
                 }
+                Yii::$app->session->setFlash('info', 'Akses ditolak. Silakan login kembali.');
+                return $this->redirect(['login']);
             }
             
             // Jika user sudah login untuk error lain, redirect ke halaman admin/home
@@ -183,6 +173,17 @@ class SiteController extends Controller
      *
      * @return string
      */
+
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, ['login', 'error'], true)) {
+            Yii::$app->response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            Yii::$app->response->headers->set('Pragma', 'no-cache');
+            Yii::$app->response->headers->set('Expires', 'Thu, 01 Jan 1970 00:00:00 GMT');
+        }
+
+        return parent::beforeAction($action);
+    }
 
     public function actionLogin()
     {

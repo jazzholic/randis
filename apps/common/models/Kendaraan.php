@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-use mongosoft\file\UploadBehavior;
+use mongosoft\file\UploadBehavior; 
 
 /**
  * This is the model class for table "kendaraan".
@@ -38,6 +38,9 @@ use mongosoft\file\UploadBehavior;
  */
 class Kendaraan extends \yii\db\ActiveRecord
 {
+    public $nomor_polisi_lama;
+    public $pemegang_lama;
+    public $instansi_lama;
 
     public function behaviors()
     {
@@ -198,7 +201,8 @@ class Kendaraan extends \yii\db\ActiveRecord
     public function getKendaraan()
     {
         $pemegang = \common\models\Pemegang::find()->where(['id_pemegang'=>$this->pemegang_id])->one();
+        $namaPemegang = $pemegang ? $pemegang['nama_pemegang'] : '-';
 
-        return $this->nomor_polisi.' - '.$pemegang['nama_pemegang'];
+        return $this->nomor_polisi.' - '.$namaPemegang;
     }
 }

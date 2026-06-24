@@ -23,10 +23,10 @@ class LaporanController extends \yii\web\Controller
             
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index','create','updated','delete','import','harian'],
+                'only' => ['all','allpdf','allexcel','index','create','updated','delete','import','harian'],
                 'rules' => [
                     [
-                        'actions' => ['all','index','create','updated','delete','import','harian'],
+                        'actions' => ['all','allpdf','allexcel','index','create','updated','delete','import','harian'],
                         'allow' => true,
                         'roles' => ['@'],
                         //'matchCallback' => function ($rule, $action) {
@@ -153,6 +153,75 @@ class LaporanController extends \yii\web\Controller
 
     exit;
 }
+
+    public function actionAllexcel(array $params)
+    {
+        if (Yii::$app->user->isGuest || Yii::$app->user->identity->level !== 'administrator') {
+            throw new \yii\web\ForbiddenHttpException('Hanya administrator.');
+        }
+
+        $model  = new ReportForm;
+        $report = new Report();
+        $model->instansi = $params['instansi'];
+
+        if ((int) $model->instansi !== 0) {
+            return $this->redirect(['laporan/allpdf', 'params' => $params]);
+        }
+
+        $data = $report->arrayAll($model);
+
+        $objPHPExcel = new \PHPExcel();
+        $sheet = $objPHPExcel->getActiveSheet();
+        $sheet->setTitle('Laporan Semua Instansi');
+
+        $headers = [
+            'NO', 'JENIS BARANG', 'MERK/TYPE', 'UKURAN/CC', 'TAHUN PEMBELIAN',
+            'KONDISI', 'HARGA PEMBELIAN', 'RANGKA', 'MESIN', 'POLISI', 'BPKB',
+            'NAMA PEMEGANG', 'KETERANGAN'
+        ];
+
+        foreach ($headers as $index => $label) {
+            $sheet->setCellValueByColumnAndRow($index , 1, $label);
+        }
+
+        $sheet->getStyle('A1:M1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:M1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $row = 2;
+        foreach ($data as $key) {
+            $sheet->setCellValue('A' . $row, $row - 1);
+            $sheet->setCellValue('B' . $row, $key['jenis_barang']);
+            $sheet->setCellValue('C' . $row, ($key['nama_merk'] ?? '') . '/' . ($key['nama_type'] ?? ''));
+            $sheet->setCellValue('D' . $row, $key['isi_silinder']);
+            $sheet->setCellValue('E' . $row, $key['tahun_pembelian']);
+            $sheet->setCellValue('F' . $row, $key['kondisi'] ?? '-');
+            $sheet->setCellValue('G' . $row, $key['harga_pembelian'] ?? 0);
+            $sheet->setCellValue('H' . $row, $key['nomor_rangka']);
+            $sheet->setCellValue('I' . $row, $key['nomor_mesin']);
+            $sheet->setCellValue('J' . $row, $key['nomor_polisi']);
+            $sheet->setCellValue('K' . $row, $key['nomor_bpkb']);
+            $sheet->setCellValue('L' . $row, $key['nama_pemegang']);
+            $sheet->setCellValue('M' . $row, $key['keterangan'] ?? '');
+            $row++;
+        }
+
+        foreach (range('A', 'M') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        if ($row > 2) {
+            $sheet->getStyle('G2:G' . ($row - 1))->getNumberFormat()
+                ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Laporan_All_Instansi.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $writer->save('php://output');
+        exit;
+    }
 
     public function actionKondisi()
     {

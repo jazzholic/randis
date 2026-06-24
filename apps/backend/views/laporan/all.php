@@ -29,11 +29,23 @@ function kemarin($tanggal,$komoditi){
     <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-check-square-o" aria-hidden="true"></i> <?= Html::encode($this->title) ?></h3>
         <div class="box-tolls pull-right">
-            <?php 
-            if(isset($model->instansi)){
-            ?>
-            <?=Html::a('<i class="fa fa-file-excel-o"></i> Export PDF', ['laporan/allpdf', 'params'=>$model],['title'=> 'Export Ke PDF','class'=>'btn btn-danger btn-box-tool','target' => '_blank','style'=>'color:#fff'])?>
-            <?php }?>
+            <?php if (isset($model->instansi)): ?>
+                <?php if ((int) $model->instansi === 0 && Yii::$app->user->identity->level === 'administrator'): ?>
+                    <?= Html::a('<i class="fa fa-file-excel-o"></i> Export Excel', ['laporan/allexcel', 'params' => $model], [
+                        'title' => 'Export ke Excel',
+                        'class' => 'btn btn-success btn-box-tool',
+                        'target' => '_blank',
+                        'style' => 'color:#fff'
+                    ]) ?>
+                <?php else: ?>
+                    <?= Html::a('<i class="fa fa-file-pdf-o"></i> Export PDF', ['laporan/allpdf', 'params' => $model], [
+                        'title' => 'Export Ke PDF',
+                        'class' => 'btn btn-danger btn-box-tool',
+                        'target' => '_blank',
+                        'style' => 'color:#fff'
+                    ]) ?>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
     <div class="box-body">
