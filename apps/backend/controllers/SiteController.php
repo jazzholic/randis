@@ -116,8 +116,17 @@ class SiteController extends Controller
                 $request = Yii::$app->request;
 
                 $pemegang = \common\models\Pemegang::find()->where(['nip_pemegang'=>Yii::$app->user->identity->username])->one();
+                
+                if($pemegang === null) {
+                    throw new \yii\web\NotFoundHttpException('Data pemegang tidak ditemukan.');
+                }
 
                 $model = \common\models\Kendaraan::find()->where(['pemegang_id'=>$pemegang['id_pemegang']])->one();
+                
+                if($model === null) {
+                    throw new \yii\web\NotFoundHttpException('Data kendaraan tidak ditemukan.');
+                }
+                
                 $model->setScenario('update'); 
 
                 if($model->load($request->post()) && $model->save()){
@@ -173,7 +182,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-
+ 
     public function beforeAction($action)
     {
         if (in_array($action->id, ['login', 'error'], true)) {

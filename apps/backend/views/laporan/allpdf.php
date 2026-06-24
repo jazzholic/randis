@@ -82,7 +82,7 @@ $bln_array = array (
         </td>
     </tr>
     <tr>
-        <td style="border-top:2px solid #000;border-bottom: 1px solid #000;padding-top:2px">
+        <td style="border-top:2px solid #000;padding-top:2px">
             &nbsp;
         </td>
     </tr>
@@ -93,18 +93,18 @@ $bln_array = array (
             <thead>
                 <tr>
                     <th style="vertical-align:middle;text-align:center">#</th>
-                    <th style="vertical-align:middle;text-align:left">JENIS BARANG</th>
-                    <th style="vertical-align:middle;text-align:left">MERK/TYPE</th>
-                    <th style="vertical-align:middle;text-align:left">UKURAN/CC</th>
+                    <th style="vertical-align:middle;text-align:center">JENIS BARANG</th>
+                    <th style="vertical-align:middle;text-align:center">MERK/TYPE</th>
+                    <th style="vertical-align:middle;text-align:center">UKURAN/CC</th>
                     <th style="vertical-align:middle;text-align:center">TAHUN PEMBELIAN</th>
-                    <th style="vertical-align:middle;text-align:left">KONDISI</th>
-                    <th style="vertical-align:middle;text-align:right">HARGA PEMBELIAN</th>
+                    <th style="vertical-align:middle;text-align:center">KONDISI</th>
+                    <th style="vertical-align:middle;text-align:center">HARGA PEMBELIAN</th>
                     <th style="vertical-align:middle;text-align:center">RANGKA</th>
                     <th style="vertical-align:middle;text-align:center">MESIN</th>
                     <th style="vertical-align:middle;text-align:center">POLISI</th>
                     <th style="vertical-align:middle;text-align:center">BPKB</th>
-                    <th style="vertical-align:middle;text-align:left">NAMA PEMEGANG</th>
-                    <th style="vertical-align:middle;text-align:left">KETERANGAN</th>
+                    <th style="vertical-align:middle;text-align:center">NAMA PEMEGANG</th>
+                    <th style="vertical-align:middle;text-align:center">KETERANGAN</th>
                 </tr>
             </thead>
             <tbody>

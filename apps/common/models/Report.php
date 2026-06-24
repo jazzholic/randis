@@ -163,6 +163,7 @@ class Report
                 'u.total_biaya',
                 'u.keterangan',
                 'u.lampiran',
+                'u.instansi_id',
                 'p.nomor_mesin',
                 'p.nomor_polisi',
                 'q.jenis_barang',

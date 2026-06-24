@@ -82,12 +82,15 @@ return [
         'contentOptions' =>['style'=>'text-align:center;'],
         'format' => 'raw',
         'value' => function($data){
+            $kondisi = \common\models\Kondisi::find()->where(['id_kondisi'=>$data->kondisi_id])->one();
+            $namaKondisi = $kondisi ? $kondisi['kondisi'] : '-';
+            
             if($data->kondisi_id == '1'){
-                return '<span class="badge bg-green text-center">Baik</span>';
-            }elseif($data->kondisi_id == '1'){
-                return '<span class="badge bg-yellow text-center">Baik</span>';
+                return '<span class="badge bg-green text-center">'.$namaKondisi.'</span>';
+            }elseif($data->kondisi_id == '2'){
+                return '<span class="badge bg-yellow text-center">'.$namaKondisi.'</span>';
             }else{
-                return '<span class="badge bg-red text-center">Baik</span>';
+                return '<span class="badge bg-red text-center">'.$namaKondisi.'</span>';
             }
         }
     ],
