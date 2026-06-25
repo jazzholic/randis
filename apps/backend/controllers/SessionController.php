@@ -12,7 +12,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 
 /**
- * SessionController implements the CRUD actions for Session model.
+ * SessionController implements the CRUD actions for Session model. 
  */
 class SessionController extends Controller
 {

@@ -15,7 +15,7 @@ use yii\helpers\Html;
 use yii\filters\AccessControl;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * UserController implements the CRUD actions for User model. 
  */
 class UserController extends Controller
 {

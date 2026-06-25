@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use yii\filters\AccessControl;
+use yii\filters\AccessControl; 
 
 /**
  * PemegangController implements the CRUD actions for Pemegang model.

@@ -16,7 +16,7 @@ use mongosoft\file\UploadBehavior;
  * @property int $tahun_pembelian
  * @property string $nomor_rangka
  * @property string $nomor_mesin
- * @property string $nomo_polisi
+ * @property string $nomor_polisi
  * @property string $nomor_bpkb
  * @property int $pemegang_id
  * @property int $kondisi_id
