@@ -1,0 +1,16 @@
+=IF(ISNUMBER(SEARCH("honda";E1027));"honda";
+IF(ISNUMBER(SEARCH("htm";E1027));"HTM";
+IF(ISNUMBER(SEARCH("supra";E1027));"honda";
+IF(ISNUMBER(SEARCH("yamaha";E1027));"yamaha";
+IF(ISNUMBER(SEARCH("happy";E1027));"happy";
+IF(ISNUMBER(SEARCH("tossa";E1027));"tossa";
+IF(ISNUMBER(SEARCH("suzuki";E1027));"suzuki";
+IF(ISNUMBER(SEARCH("kawasaki";E1027));"kawasaki";
+IF(ISNUMBER(SEARCH("viar";E1027));"viar";
+IF(ISNUMBER(SEARCH("kaisar";E1027));"kaisar";
+IF(ISNUMBER(SEARCH("power";E1027));"power ace";
+IF(ISNUMBER(SEARCH("ktm";E1027));"KTM";
+""))))))))))))
+
+
+
