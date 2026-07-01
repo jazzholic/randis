@@ -23,7 +23,8 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'kendaraan_id',
         'value' => function($data){
-            return $data['kendaraan']['kendaraan'];
+            $kendaraan = $data->kendaraan;
+            return $kendaraan ? $kendaraan->kendaraan : '-';
         },
         //'filter'=>false,
         'filterType' => GridView::FILTER_SELECT2,
