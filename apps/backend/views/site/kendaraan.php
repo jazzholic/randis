@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="col-md-4 col-md-offset-4 text-center">
-  <h3 style="color:#fff">SISTIM INFORMASI<br/>KENDARAAN DINAS</h3>
-  <h5 style="color:#fff">PEMERINTAH KOTA MATARAM</h5>
+  <h3 style="color:#000; text-shadow: 1px 1px 3px rgba(0,0,0,0.45);">SISTIM INFORMASI<br/>KENDARAAN DINAS</h3>
+  <h5 style="color:#000; text-shadow: 1px 1px 3px rgba(0,0,0,0.35);">PEMERINTAH KOTA MATARAM</h5>
   <p>&nbsp;</p>
   <p><span class="logo"><img src="<?= Yii::$app->request->baseUrl ?>/img/logo.png"></span></p>
 </div>
@@ -113,10 +113,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>Pemegang Terakhir</th>
                     <td><?=$model['pemegang']['nama_pemegang']?></td>
                   </tr>
+                  <?php if(!empty($model['pemegang']['jabatan'])){ ?>
                   <tr>
                     <th>Jabatan</th>
-                    <td><?=$model['pemegang']['jabatan']?></td>
+                    <td><?= $model['pemegang']['jabatan'] ?></td>
                   </tr>
+                  <?php } ?>
                   <tr>
                     <th>Merk</th>
                     <td><?=$model['merk']['nama_merk']?></td>
@@ -125,10 +127,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>Type</th>
                     <td><?=$model['type']['nama_type']?></td>
                   </tr>
+                  <?php if(!empty($model['isi_silinder']) && (int)$model['isi_silinder'] > 0){ ?>
                   <tr>
                     <th>Isi Silinder</th>
-                    <td><?=$model['isi_silinder']?> CC</td>
+                    <td><?= $model['isi_silinder'] ?> CC</td>
                   </tr>
+                  <?php } ?>
                   <tr>
                     <th>Tahun Pembelian</th>
                     <td><?=$model['tahun_pembelian']?></td>
@@ -136,6 +140,10 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <th>Kondisi</th>
                     <td><?=$model['kondisi']['kondisi']?></td>
+                  </tr>
+                  <tr>
+                    <th>keterangan</th>
+                    <td><?=$model['keterangan']?></td>
                   </tr>
                 </table>
               </div>

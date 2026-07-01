@@ -22,12 +22,24 @@ KendaraanAsset::register($this);
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <style>
         body{
+            position: relative;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url("<?= Yii::$app->request->baseUrl ?>/img/Gemini_Generated_Image_o4ie7o4ie7o4ie7o.png");
             background-size: cover;
             background-position: center;
-            background-image: url("<?= Yii::$app->request->baseUrl ?>/img/lombok.jpg");
-            background-color: #cccccc; 
             background-repeat: no-repeat;
-            background-attachment: fixed; 
+            background-attachment: fixed;
+            opacity: 0.35;
+            z-index: -1;
         }
     </style>
     

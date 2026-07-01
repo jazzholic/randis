@@ -1,5 +1,4 @@
 <?php
-use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
 ?>
@@ -20,13 +19,6 @@ use common\widgets\Alert;
                 } ?>
             </h1>
         <?php } ?>
-
-        <?=
-        Breadcrumbs::widget(
-            [
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]
-        ) ?>
     </section>
 
     <section class="content">
@@ -34,10 +26,3 @@ use common\widgets\Alert;
         <?= $content ?>
     </section>
 </div>
-
-<footer class="main-footer">
-    <div class="pull-right hidden-xs">
-    </div>
-    <strong>Copyright &copy; <?= date('Y') ?> <a href=""><span class="text-maroon">Kota Mataram</span></a>.</strong> All rights
-    reserved.
-</footer>
